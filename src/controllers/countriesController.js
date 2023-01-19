@@ -1,9 +1,9 @@
 const axios = require('axios')
 const { Country, Activity } = require('../db.js')
-const url = 'https://restcountries.com/v3.1/all'
+const API_URL = 'https://restcountries.com/v3/all'
 
 const getApiInfo = async () => {
-    const request = await axios.get(url)
+    const request = await axios.get(API_URL)
     const countries = request.data.forEach(c => {
         Country.bulkCreate({
             where: {
@@ -18,6 +18,7 @@ const getApiInfo = async () => {
             }
         })
     })
+
     const allCountries = await Country.findAll({
         include: [Activity]
     })
