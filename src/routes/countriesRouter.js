@@ -53,12 +53,12 @@ countriesRouter.get('/:id', async (req, res) => {
            }
         },
       });
-      return countryById ? res.send(countryById).status(200) : res.send('It does not exist a country with that id. Please try again').status(400)
+      return countryById ? res.send(countryById).status(200) : res.status(400).send('It does not exist a country with that id. Please try again')
     } catch (error) {
-      return res.send(error.message).status(400);
+      return res.status(400).send('It does not exist a country with that id. Please try again');
     }
    } else {
-    return res.send('It does not exist a country with that id. Please try again').status(400)
+    return res.status(400).send( 'It does not exist a country with that id. Please try again')
    }
 })
 
