@@ -7,9 +7,9 @@ const { Country, Activity } = require('../db.js')
 countriesRouter.get('/', async (req, res) => {
     const { name } = req.query
     try {
-      const allCountries = await getApiInfo()
+      let countries;
         if(name){
-           let countryByName = await Country.findAll({
+          countries = await Country.findAll({
             where: {
                 name: {
                     [Op.iLike]: `%${name}%`
@@ -22,17 +22,16 @@ countriesRouter.get('/', async (req, res) => {
                 attributes:[]
             }
           }
-        })
-        countryByName.length ? res.status(200).send(countryByName) : res.status(400).send('Oops, no hay pais con ese nombre')
+        });
+        if (countries.length === 0) {
+          return res.status(400).send('Oops, no hay país con ese nombre');
+          }
         } else {
-          // Get countries sorted by name by default
-          const allCountriesSorted = allCountries.sort(function(a,b){
-            if(a.name > b.name) return 1
-            if(b.name > a.name) return -1
-            return 0 })
-          res.status(200).send(allCountriesSorted) 
+          countries = await getApiInfo();
         }
+        res.status(200).send(countries);
     } catch (error) {
+        console.error('Error fetching countries:', error);
         res.status(400).send('Oops! Something went wrong. Please try again')
     }    
 })
