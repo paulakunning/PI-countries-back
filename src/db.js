@@ -8,17 +8,8 @@ const {
 } = process.env;
 
 
-/* Local database config:
-    const sequelize = new Sequelize(
-  DB_NAME,
-  DB_USER,
-  DB_PASSWORD,
-  {
-    dialect: 'postgres'
-  }
-); */
-
 const sequelize = new Sequelize(`${DB_DEPLOY}`, {
+  dialectModule: require('pg'),
   dialectOptions: {
     ssl: {
       require: true,
